@@ -18,7 +18,7 @@ public class Resurs : MonoBehaviour
         _boxCollider = GetComponent<BoxCollider>();
     }
 
-    //Метод сброса настроек ресурса
+    //Метод сброса настроек ресурса  
     public void StandartSetting()
     { 
         IsIncludeFree = false;

@@ -15,7 +15,8 @@ public class CommandCenter : MonoBehaviour
     private Queue<Drone> _drons = new Queue<Drone>();   //Cписок дронов
     private Drone _tempDrone;   //Временный дрон
     private bool _isHaveDrone = false;   //Дрон создан
-    private int _resurseStorage = 0;    //Хранилище ресурсов    
+    private int _resurseStorage = 0;    //Хранилище ресурсов
+    private Resurs _tempResurs;                                  
 
     private void Update()
     {
@@ -57,7 +58,9 @@ public class CommandCenter : MonoBehaviour
     private void SendDrone()
     {           
         _tempDrone = _drons.Dequeue();  //Берём дрона из очереди
-        _tempDrone.SetTarget(_resursers.Dequeue().transform);   //Задание цели для дрона        
+        _tempResurs = _resursers.Dequeue(); //Получаем ресурс из очереди
+        _tempResurs.StandartSetting();  //Помечаем ресурс как не доступен для сбора
+        _tempDrone.SetTarget(_tempResurs.transform);   //Задание цели для дрона        
     }
 
     //Метод получения ресурса с указанием дрона который принёс ресурс

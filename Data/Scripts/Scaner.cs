@@ -26,7 +26,7 @@ public class Scaner : MonoBehaviour
                     //Проверяем доступен ли ресурс для сбора
                     if (!resurs.IsIncludeFree)
                     { 
-                        resurs.SetInclude();    //Помечаем ресурс как в процессе сбора
+                        resurs.SetInclude();    //Помечаем ресурс как доступен для сбора
                         resurses.Enqueue(resurs);   //Помещаем ресурс в список ресурсов
                     }
                 }
