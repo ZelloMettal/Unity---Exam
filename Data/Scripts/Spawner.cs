@@ -10,7 +10,7 @@ public class Spawner : MonoBehaviour
     [SerializeField] private Resurs _prefabResurs;  //Префаб ресурса
     [SerializeField] private float _delaySpawn; //Время задержки спавна ресурса
 
-    private WaitForSeconds _wait;   //Ожидание спавна
+    private WaitForSeconds _wait;   //Ожидание спавна 
 
     private void Start()
     {

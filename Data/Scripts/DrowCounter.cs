@@ -1,14 +1,14 @@
-using UnityEngine;
+п»їusing UnityEngine;
 using UnityEngine.UI;
 
-//Скрипт отображения количества ресурсов
+//РЎРєСЂРёРїС‚ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РєРѕР»РёС‡РµСЃС‚РІР° СЂРµСЃСѓСЂСЃРѕРІ
 public class DrowCounter : MonoBehaviour
 {
-    [SerializeField] private Text _text;    //Компонент текста
+    [SerializeField] private Text _text;    //РљРѕРјРїРѕРЅРµРЅС‚ С‚РµРєСЃС‚Р°
 
-    //Метод рисования
+    //РњРµС‚РѕРґ СЂРёСЃРѕРІР°РЅРёСЏ
     public void DrowCountResurs(int count)
     { 
-        _text.text = count.ToString();  //Отрисовываем количество ресурсов у базы
+        _text.text = count.ToString();  //РћС‚СЂРёСЃРѕРІС‹РІР°РµРј РєРѕР»РёС‡РµСЃС‚РІРѕ СЂРµСЃСѓСЂСЃРѕРІ Сѓ Р±Р°Р·С‹
     }
 }

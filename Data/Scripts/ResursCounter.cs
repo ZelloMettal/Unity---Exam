@@ -1,28 +1,28 @@
-using System;
+п»їusing System;
 using UnityEngine;
 
-//Скрипт счётчика ресурсов у базы
+//РЎРєСЂРёРїС‚ СЃС‡С‘С‚С‡РёРєР° СЂРµСЃСѓСЂСЃРѕРІ Сѓ Р±Р°Р·С‹
 public class ResursCounter : MonoBehaviour
 {
-    [SerializeField] DrowCounter _drowCounter;  //Объект рисования счётчика
+    [SerializeField] DrowCounter _drowCounter;  //РћР±СЉРµРєС‚ СЂРёСЃРѕРІР°РЅРёСЏ СЃС‡С‘С‚С‡РёРєР°
 
-    private int _resursCounter = 0; //Количество ресурсов
+    private int _resursCounter = 0; //РљРѕР»РёС‡РµСЃС‚РІРѕ СЂРµСЃСѓСЂСЃРѕРІ
 
-    //Метод добавления ресурсов
+    //РњРµС‚РѕРґ РґРѕР±Р°РІР»РµРЅРёСЏ СЂРµСЃСѓСЂСЃРѕРІ
     public void AddResurs()
     { 
         _resursCounter++;
         _drowCounter.DrowCountResurs(_resursCounter);
     }
 
-    //Метод потребления ресурсов
-    public void ResourceСonsumption(int resurses)
+    //РњРµС‚РѕРґ РїРѕС‚СЂРµР±Р»РµРЅРёСЏ СЂРµСЃСѓСЂСЃРѕРІ
+    public void ResourceРЎonsumption(int resurses)
     { 
         _resursCounter -= resurses;
         _drowCounter.DrowCountResurs(_resursCounter);
     }
 
-    //Метод получения общего количества ресурсов
+    //РњРµС‚РѕРґ РїРѕР»СѓС‡РµРЅРёСЏ РѕР±С‰РµРіРѕ РєРѕР»РёС‡РµСЃС‚РІР° СЂРµСЃСѓСЂСЃРѕРІ
     public int GetResursCount()
     { 
         return _resursCounter;

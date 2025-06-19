@@ -9,7 +9,6 @@ public class Resurs : MonoBehaviour
     //Контейнеры компонентов
     private Rigidbody _rigidbody;
     private BoxCollider _boxCollider;
-
     public bool IsIncludeFree { get; private set; } = false;    //Свойство состояния доступности ресурса для сбора    
 
     void Start()

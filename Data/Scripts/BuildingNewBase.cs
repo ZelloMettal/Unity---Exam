@@ -1,106 +1,106 @@
-using System.Collections.Generic;
+п»їusing System.Collections.Generic;
 using UnityEngine;
 
-//Скрипт строительства базы
+//РЎРєСЂРёРїС‚ СЃС‚СЂРѕРёС‚РµР»СЊСЃС‚РІР° Р±Р°Р·С‹
 public class BuildingNewBase : MonoBehaviour
 {
-    [SerializeField] private Camera _camera;    //Компонент камеры
-    [SerializeField] private CommandCenter _prefabCommandCenter;  //Перфаб базы
-    [SerializeField] private Transform _containerBase;  //Контейнер баз
-    [SerializeField] private float _scaneRadius;    //Радиус области сканирования
-    [SerializeField] private Color _colorCanBuild;  //Цвет базы если строительство возможно
-    [SerializeField] private Color _colorCantBuild; //Цвет базы если строительство не возможно
+    [SerializeField] private Camera _camera;    //РљРѕРјРїРѕРЅРµРЅС‚ РєР°РјРµСЂС‹
+    [SerializeField] private CommandCenter _prefabCommandCenter;  //РџРµСЂС„Р°Р± Р±Р°Р·С‹
+    [SerializeField] private Transform _containerBase;  //РљРѕРЅС‚РµР№РЅРµСЂ Р±Р°Р·
+    [SerializeField] private float _scaneRadius;    //Р Р°РґРёСѓСЃ РѕР±Р»Р°СЃС‚Рё СЃРєР°РЅРёСЂРѕРІР°РЅРёСЏ
+    [SerializeField] private Color _colorCanBuild;  //Р¦РІРµС‚ Р±Р°Р·С‹ РµСЃР»Рё СЃС‚СЂРѕРёС‚РµР»СЊСЃС‚РІРѕ РІРѕР·РјРѕР¶РЅРѕ
+    [SerializeField] private Color _colorCantBuild; //Р¦РІРµС‚ Р±Р°Р·С‹ РµСЃР»Рё СЃС‚СЂРѕРёС‚РµР»СЊСЃС‚РІРѕ РЅРµ РІРѕР·РјРѕР¶РЅРѕ
 
-    private RaycastHit _raycastHit; //Компонент столкновения луча
-    private Ray _ray;   //Луч
-    private float _rayDistance = 1000f; //Дальность луча
-    private CommandCenter _tempCommandCenter = null;    //Контейнер базы
-    private bool _isHaveBuildBase = false;  //Состояние строительства новой базы
-    private CommandCenter _parentBase;  //контейнер родительской базы
+    private RaycastHit _raycastHit; //РљРѕРјРїРѕРЅРµРЅС‚ СЃС‚РѕР»РєРЅРѕРІРµРЅРёСЏ Р»СѓС‡Р°
+    private Ray _ray;   //Р›СѓС‡
+    private float _rayDistance = 1000f; //Р”Р°Р»СЊРЅРѕСЃС‚СЊ Р»СѓС‡Р°
+    private CommandCenter _tempCommandCenter = null;    //РљРѕРЅС‚РµР№РЅРµСЂ Р±Р°Р·С‹
+    private bool _isHaveBuildBase = false;  //РЎРѕСЃС‚РѕСЏРЅРёРµ СЃС‚СЂРѕРёС‚РµР»СЊСЃС‚РІР° РЅРѕРІРѕР№ Р±Р°Р·С‹
+    private CommandCenter _parentBase;  //РєРѕРЅС‚РµР№РЅРµСЂ СЂРѕРґРёС‚РµР»СЊСЃРєРѕР№ Р±Р°Р·С‹
 
     private void Update()
     {
-        _ray = _camera.ScreenPointToRay(Input.mousePosition);   //Рисуем луч от камеры до курсора мыши
-        Physics.Raycast(_ray, out _raycastHit); //Столкновение луча с объектом
-        Debug.DrawRay(_ray.origin, _ray.direction* _rayDistance);   //Рисуем луч
+        _ray = _camera.ScreenPointToRay(Input.mousePosition);   //Р РёСЃСѓРµРј Р»СѓС‡ РѕС‚ РєР°РјРµСЂС‹ РґРѕ РєСѓСЂСЃРѕСЂР° РјС‹С€Рё
+        Physics.Raycast(_ray, out _raycastHit); //РЎС‚РѕР»РєРЅРѕРІРµРЅРёРµ Р»СѓС‡Р° СЃ РѕР±СЉРµРєС‚РѕРј
+        Debug.DrawRay(_ray.origin, _ray.direction* _rayDistance);   //Р РёСЃСѓРµРј Р»СѓС‡
         SelectionBase();
         BuildBase();
     }
 
-    //Метод выбора базы
+    //РњРµС‚РѕРґ РІС‹Р±РѕСЂР° Р±Р°Р·С‹
     private void SelectionBase()
     {
-        //Проверяем нажатие мыши
+        //РџСЂРѕРІРµСЂСЏРµРј РЅР°Р¶Р°С‚РёРµ РјС‹С€Рё
         if (Input.GetMouseButtonDown(0) && !_isHaveBuildBase)
         {
-            //Проверяем, что мы смотрим на необъодимый объект
+            //РџСЂРѕРІРµСЂСЏРµРј, С‡С‚Рѕ РјС‹ СЃРјРѕС‚СЂРёРј РЅР° РЅРµРѕР±СЉРѕРґРёРјС‹Р№ РѕР±СЉРµРєС‚
             if (_raycastHit.transform.TryGetComponent<CommandCenter>(out CommandCenter center))
             {
-                _isHaveBuildBase = true;    //Начинаем строительство
-                _parentBase = center;   //Получаем родительскую базу
+                _isHaveBuildBase = true;    //РќР°С‡РёРЅР°РµРј СЃС‚СЂРѕРёС‚РµР»СЊСЃС‚РІРѕ
+                _parentBase = center;   //РџРѕР»СѓС‡Р°РµРј СЂРѕРґРёС‚РµР»СЊСЃРєСѓСЋ Р±Р°Р·Сѓ
             }
         }
         else if (Input.GetMouseButtonDown(1))
         {
             if (_tempCommandCenter != null)
             {
-                Destroy(_tempCommandCenter.gameObject); //Отменяем строительство
-                _isHaveBuildBase = false;   //Заканчиваем строительство
+                Destroy(_tempCommandCenter.gameObject); //РћС‚РјРµРЅСЏРµРј СЃС‚СЂРѕРёС‚РµР»СЊСЃС‚РІРѕ
+                _isHaveBuildBase = false;   //Р—Р°РєР°РЅС‡РёРІР°РµРј СЃС‚СЂРѕРёС‚РµР»СЊСЃС‚РІРѕ
             }
         }
         else if (Input.GetMouseButtonDown(0) && _isHaveBuildBase && !IsCollited())
         {
-            _parentBase.StartBuildNewBase(_tempCommandCenter, true);    //Родительская база начинает строить базу
-            _tempCommandCenter = null;  //Устанавливаем призрак новой базы
-            _isHaveBuildBase = false;   //Заканчиваем строительство
+            _parentBase.StartBuildNewBase(_tempCommandCenter, true);    //Р РѕРґРёС‚РµР»СЊСЃРєР°СЏ Р±Р°Р·Р° РЅР°С‡РёРЅР°РµС‚ СЃС‚СЂРѕРёС‚СЊ Р±Р°Р·Сѓ
+            _tempCommandCenter = null;  //РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј РїСЂРёР·СЂР°Рє РЅРѕРІРѕР№ Р±Р°Р·С‹
+            _isHaveBuildBase = false;   //Р—Р°РєР°РЅС‡РёРІР°РµРј СЃС‚СЂРѕРёС‚РµР»СЊСЃС‚РІРѕ
         }
     }
 
-    //Метод определения столкновения луча с нужным объектом
+    //РњРµС‚РѕРґ РѕРїСЂРµРґРµР»РµРЅРёСЏ СЃС‚РѕР»РєРЅРѕРІРµРЅРёСЏ Р»СѓС‡Р° СЃ РЅСѓР¶РЅС‹Рј РѕР±СЉРµРєС‚РѕРј
     private bool IsCollited()
     {
-        //Собираем все коллайдеры на которые поал луч
+        //РЎРѕР±РёСЂР°РµРј РІСЃРµ РєРѕР»Р»Р°Р№РґРµСЂС‹ РЅР° РєРѕС‚РѕСЂС‹Рµ РїРѕР°Р» Р»СѓС‡
         Collider[] triggerColliders = Physics.OverlapSphere(_raycastHit.point, _scaneRadius);
 
-        //Перебираем полученные коллайдеры
+        //РџРµСЂРµР±РёСЂР°РµРј РїРѕР»СѓС‡РµРЅРЅС‹Рµ РєРѕР»Р»Р°Р№РґРµСЂС‹
         foreach (Collider collider in triggerColliders)
         {
-            //Ищем коллайдеры с компонентом CommandCenter 
+            //РС‰РµРј РєРѕР»Р»Р°Р№РґРµСЂС‹ СЃ РєРѕРјРїРѕРЅРµРЅС‚РѕРј CommandCenter 
             if (collider.gameObject.TryGetComponent<CommandCenter>(out CommandCenter center))
             {
                 if (_tempCommandCenter != center)
                 {
-                    return true; //Возвращаем тру если нашли нужный объект
+                    return true; //Р’РѕР·РІСЂР°С‰Р°РµРј С‚СЂСѓ РµСЃР»Рё РЅР°С€Р»Рё РЅСѓР¶РЅС‹Р№ РѕР±СЉРµРєС‚
                 }
             }
         }
-        return false; //Если не нашли
+        return false; //Р•СЃР»Рё РЅРµ РЅР°С€Р»Рё
     }
 
-    //Метод строительства базы
+    //РњРµС‚РѕРґ СЃС‚СЂРѕРёС‚РµР»СЊСЃС‚РІР° Р±Р°Р·С‹
     public void BuildBase()
     {        
-        //Если в режиме строительства и база не создана
+        //Р•СЃР»Рё РІ СЂРµР¶РёРјРµ СЃС‚СЂРѕРёС‚РµР»СЊСЃС‚РІР° Рё Р±Р°Р·Р° РЅРµ СЃРѕР·РґР°РЅР°
         if (_isHaveBuildBase && _tempCommandCenter == null)
         {
             if (_parentBase.GetDronCount() > 1)
             {
-                _tempCommandCenter = Instantiate(_prefabCommandCenter); //Создаём базу в руке
+                _tempCommandCenter = Instantiate(_prefabCommandCenter); //РЎРѕР·РґР°С‘Рј Р±Р°Р·Сѓ РІ СЂСѓРєРµ
             }
         }
         else if (_tempCommandCenter != null)
         {
-            _tempCommandCenter.transform.position = new Vector3(_raycastHit.point.x, 1, _raycastHit.point.z);   //Выбираем позицию строительства базы по положению курсора
+            _tempCommandCenter.transform.position = new Vector3(_raycastHit.point.x, 1, _raycastHit.point.z);   //Р’С‹Р±РёСЂР°РµРј РїРѕР·РёС†РёСЋ СЃС‚СЂРѕРёС‚РµР»СЊСЃС‚РІР° Р±Р°Р·С‹ РїРѕ РїРѕР»РѕР¶РµРЅРёСЋ РєСѓСЂСЃРѕСЂР°
         }
 
-        //Меняем цвет призрака строющейся базы
+        //РњРµРЅСЏРµРј С†РІРµС‚ РїСЂРёР·СЂР°РєР° СЃС‚СЂРѕСЋС‰РµР№СЃСЏ Р±Р°Р·С‹
         if(IsCollited() && _tempCommandCenter != null)
         {
-            _tempCommandCenter.ChangeColor(_colorCantBuild);    //Устанавливаем запрета строительства
+            _tempCommandCenter.ChangeColor(_colorCantBuild);    //РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј Р·Р°РїСЂРµС‚Р° СЃС‚СЂРѕРёС‚РµР»СЊСЃС‚РІР°
         }
         else if(_tempCommandCenter != null)
         {
-            _tempCommandCenter.ChangeColor(_colorCanBuild);     //Устанавливаем цвет разрешения строительства
+            _tempCommandCenter.ChangeColor(_colorCanBuild);     //РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј С†РІРµС‚ СЂР°Р·СЂРµС€РµРЅРёСЏ СЃС‚СЂРѕРёС‚РµР»СЊСЃС‚РІР°
         }        
     }    
 }
