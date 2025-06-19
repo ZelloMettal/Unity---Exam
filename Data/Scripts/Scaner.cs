@@ -8,6 +8,13 @@ public class Scaner : MonoBehaviour
 {
     [SerializeField] private float _scaneRadius;    //Радиус области сканирования
 
+    //Рисуем область сканирования ресурсов
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, _scaneRadius);
+    }
+
     //Метод сканирования принимает список(очередь) ресурсов и возвращает новый список(очередь) ресурсов
     public Queue<Resurs> Scane(Queue<Resurs> resurses)
     {
@@ -34,12 +41,5 @@ public class Scaner : MonoBehaviour
         }
 
         return resurses;
-    }
-
-    //Рисуем область сканирования ресурсов
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, _scaneRadius);
-    }
+    }    
 }

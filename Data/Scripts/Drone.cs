@@ -9,6 +9,7 @@ public class Drone : MonoBehaviour
     [SerializeField] private float _speed;  //Скорость дрона
     [SerializeField] Transform _commandCenterPosition;  //Позиция командного центра
     [SerializeField] private Transform _resursPositionOnDrone;  //Позиция ресурса ан дроне
+
     Transform[] _pointPatrolling;  //Массив точек патрулирования
     private int _currentPoint = 0;  //Начальная точка патрулирования
     private bool _isReady = false;  //Готовность дрона
@@ -25,21 +26,18 @@ public class Drone : MonoBehaviour
             if (_isHaveTarget)
             {
                 //Если есть цель то он двигается к цели
-                Debug.Log("Двигаюсь к ресурсу");
                 MoveToTarget(_target);
             }
             else 
             {
                 if (_isHaveResurses)
                 {                    
-                    //Возвращаемся на базу
-                    Debug.Log("Двигаюсь к базе");
+                    //Возвращаемся на базу 
                     MoveToTarget(_commandCenterPosition);
                 }
                 else
                 { 
                     //Двигаемся свободно
-                    Debug.Log("Патрулирую");
                     FreeMove();  
                 }
             }
@@ -57,8 +55,10 @@ public class Drone : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //Проверяем достигли дрон точки патрулирования
-        if (other.gameObject.TryGetComponent(out PointPatrolling point))        
-            _currentPoint = ++_currentPoint % _pointPatrolling.Length;  //Перемещаемся в в массиве точек
+        if (other.gameObject.TryGetComponent(out PointPatrolling point))
+        { 
+            _currentPoint = ++_currentPoint % _pointPatrolling.Length;  //Перемещаемся в массиве точек
+        }    
     }
 
     //Метод движения к базе
@@ -100,11 +100,15 @@ public class Drone : MonoBehaviour
     //Ивент сбора ресурса
     private void OnCollisionEnter(Collision collision)
     {
-        //Если мы столкнулись с ресурсом и у нас нет ресурса
+        //Проверяем столкнулся ли дрон с ресурсом у нас нет ресурса и нет цели
         if (collision.gameObject.TryGetComponent<Resurs>(out Resurs resurs) && !_isHaveResurses)
         {
-            _tempResurs = resurs;   //Получаем ресурс
-            Drag(); //Подбираем ресурс
+            //Проверяем достиг ли дрон цели
+            if (_target.position == resurs.transform.position)
+            { 
+                _tempResurs = resurs;   //Получаем ресурс
+                Drag(); //Подбираем ресурс
+            }
         }
     }
 
@@ -132,8 +136,5 @@ public class Drone : MonoBehaviour
     { 
         _target = target;
         _isHaveTarget = true;
-    }
-
-   
-
+    } 
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-//Скрипт спавнера
+//Скрипт спавнера ресурсов
 public class Spawner : MonoBehaviour
 {
     [SerializeField] private Transform _startPointSwanPosition; //Стартовая точка зоны спавнера
